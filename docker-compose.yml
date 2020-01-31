@@ -1,0 +1,14 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+    php-fpm:
+      build: phpdocker/php-fpm
+      container_name: test-php-fpm
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/local.ini
+      ports:
+        - "8000:8001"

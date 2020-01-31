@@ -1,0 +1,1 @@
+C:37:"PHPUnit\Runner\DefaultTestResultCache":288:{a:2:{s:7:"defects";a:3:{s:23:"AuthTest::testGetDigest";i:3;s:29:"AuthTest::testGetSHA256Digest";i:3;s:28:"AuthTest::testBuildSignature";i:4;}s:5:"times";a:3:{s:23:"AuthTest::testGetDigest";d:0.002;s:29:"AuthTest::testGetSHA256Digest";d:0.002;s:28:"AuthTest::testBuildSignature";d:0.002;}}}

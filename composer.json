@@ -1,0 +1,26 @@
+{
+    "name": "codehell/psd2",
+    "description": "psd2 helper library",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "dmorales",
+            "email": "dmorales@inespay.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.2",
+        "ext-openssl": "*",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Psd2\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    }
+}
