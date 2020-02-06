@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Psd2;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\StreamInterface;
 
-class Requests
+final class Requests
 {
     const VERSION = 'v1';
     private $client;
@@ -14,6 +15,13 @@ class Requests
     private $headers;
     private $certificate;
 
+    /**
+     * Requests constructor.
+     * @param $aspsp
+     * @param $token
+     * @param $clientId
+     * @param $certificate
+     */
     public function __construct($aspsp, $token, $clientId, $certificate)
     {
         $this->certificate = $certificate;
@@ -30,6 +38,12 @@ class Requests
         $this->clientId = $clientId;
     }
 
+    /**
+     * @param $requestId
+     * @param $digest
+     * @param $signature
+     * @return StreamInterface
+     */
     public function getBanks($requestId, $digest, $signature): StreamInterface
     {
         $headers = [
@@ -45,6 +59,14 @@ class Requests
         return $res->getBody();
     }
 
+    /**
+     * @param $code
+     * @param $aspsp
+     * @param $clientId
+     * @param $redirectUri
+     * @param $codeVerifier
+     * @return StreamInterface
+     */
     public function getToken($code, $aspsp, $clientId, $redirectUri, $codeVerifier): StreamInterface
     {
         // TODO Put address in config file.
@@ -63,6 +85,15 @@ class Requests
         return $res->getBody();
     }
 
+    /**
+     * @param $payload
+     * @param $requestId
+     * @param $psuIp
+     * @param $digest
+     * @param $signature
+     * @param $redirectUrl
+     * @return StreamInterface
+     */
     public function initPayment($payload, $requestId, $psuIp, $digest, $signature, $redirectUrl): StreamInterface
     {
         $localHeaders = [
@@ -76,13 +107,21 @@ class Requests
             'TPP-Redirect-URI' => $redirectUrl
         ];
         $headers = array_merge($this->headers, $localHeaders);
-        $res = $this->client->request('POST', $this->aspsp. '/' . self::VERSION . '/payments/sepa-credit-transfers', [
+        $res = $this->client->request('POST', $this->aspsp . '/' . self::VERSION . '/payments/sepa-credit-transfers', [
             'headers' => $headers,
             'body' => $payload,
         ]);
         return $res->getBody();
     }
 
+    /**
+     * @param $requestId
+     * @param $psuIp
+     * @param $digest
+     * @param $signature
+     * @param $stateUrl
+     * @return StreamInterface
+     */
     public function checkPayment($requestId, $psuIp, $digest, $signature, $stateUrl): StreamInterface
     {
         $localHeaders = [
@@ -100,6 +139,14 @@ class Requests
         return $res->getBody();
     }
 
+    /**
+     * @param $payload
+     * @param $requestId
+     * @param $digest
+     * @param $signature
+     * @param $redirectUrl
+     * @return StreamInterface
+     */
     public function initConsent($payload, $requestId, $digest, $signature, $redirectUrl): StreamInterface
     {
         $localHeaders = [
@@ -120,6 +167,13 @@ class Requests
         return $res->getBody();
     }
 
+    /**
+     * @param $requestId
+     * @param $digest
+     * @param $signature
+     * @param $consentId
+     * @return StreamInterface
+     */
     public function getConsentInfo($requestId, $digest, $signature, $consentId): StreamInterface
     {
         $localHeaders = [
