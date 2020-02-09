@@ -6,7 +6,7 @@ namespace Psd2;
 use GuzzleHttp\Client;
 use Psr\Http\Message\StreamInterface;
 
-final class Requests
+final class RedsysRequests
 {
     const VERSION = 'v1';
     private $client;
@@ -36,27 +36,6 @@ final class Requests
         ];
         $this->aspsp = $aspsp;
         $this->clientId = $clientId;
-    }
-
-    /**
-     * @param $requestId
-     * @param $digest
-     * @param $signature
-     * @return StreamInterface
-     */
-    public function getBanks($requestId, $digest, $signature): StreamInterface
-    {
-        $headers = [
-            'accept' => 'application/json',
-            'X-Request-ID' => $requestId,
-            'Digest' => $digest,
-            'Signature' => $signature,
-            'TPP-Signature-Certificate' => $this->certificate,
-        ];
-        $res = $this->client->request('GET', 'v2/sva/aspsps', [
-            'headers' => $headers,
-        ]);
-        return $res->getBody();
     }
 
     /**

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Psd2;
 
-final class Signature
+final class RedsysSignature
 {
     public function getSignature($digest, $uuid, $privateKey, $redirectUrl = null): string
     {
@@ -17,7 +17,7 @@ final class Signature
         return base64_encode($signature);
     }
 
-    public function signaruteBuilder($signature, $cert): string
+    public function headerSignature($signature, $cert): string
     {
         $crudeCert = openssl_x509_read($cert);
         $certs = openssl_x509_parse($crudeCert);

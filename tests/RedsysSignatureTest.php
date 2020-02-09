@@ -3,9 +3,9 @@ declare(strict_types=1);
 namespace Psd2\tests;
 
 use PHPUnit\Framework\TestCase;
-use Psd2\Signature;
+use Psd2\RedsysSignature;
 
-final class SignatureTest extends TestCase
+final class RedsysSignatureTest extends TestCase
 {
     private $testData;
     private $cert;
@@ -107,28 +107,28 @@ EOD;
 
     public function testGetDigest(): void
     {
-        $actual = (new Signature)->getDigest($this->testData);
+        $actual = (new RedsysSignature)->getDigest($this->testData);
         $expected = 'pfHPQFso5E7SlQfg9kSVhZuod4k9KnFFEtFs472L5WI=';
         $this->assertEquals($expected, $actual);
     }
 
     public function testGetSHA256Digest(): void
     {
-        $actual = (new Signature)->getSHA256Digest($this->testData);
+        $actual = (new RedsysSignature)->getSHA256Digest($this->testData);
         $expected = 'SHA-256=pfHPQFso5E7SlQfg9kSVhZuod4k9KnFFEtFs472L5WI=';
         $this->assertEquals($expected, $actual);
     }
 
     public function testBuildSignature(): void
     {
-        $signature = new Signature();
+        $signature = new RedsysSignature();
         $digest = $signature->getSHA256Digest($this->testData);
         $result = $signature->getSignature(
             $digest,
             'bf5113e6-3c04-4b30-b08b-505e83200c82',
             $this->privateKey
         );
-        $actual = $signature->signaruteBuilder($result, $this->cert);
+        $actual = $signature->headerSignature($result, $this->cert);
         $this->assertEquals($this->expectedSignature, $actual);
     }
 }
