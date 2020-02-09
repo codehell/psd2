@@ -37,7 +37,7 @@ final class RedsysTokenUrl
             'code_challenge' => $this->codeChallenge,
             'code_challenge_method' => $this->method,
         ];
-        $endpoint = http_build_query($data, null, '&', PHP_QUERY_RFC3986);
+        $endpoint = http_build_query($data, '', '&', PHP_QUERY_RFC3986);
         return 'https://apis-i.redsys.es:20443/psd2/xs2a/api-oauth-xs2a/services/rest/' .
             $this->aspsp . '/authorize?' . $endpoint;
     }
