@@ -9,7 +9,7 @@ use Psd2\RedsysAspsps;
 use Psd2\RedsysSignature;
 use PHPUnit\Framework\TestCase;
 
-final class RedsysBanksTest extends TestCase
+final class RedsysAspspsTest extends TestCase
 {
     /**
      * @test

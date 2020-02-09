@@ -44,9 +44,9 @@ final class RedsysRequests
      * @param $clientId
      * @param $redirectUri
      * @param $codeVerifier
-     * @return StreamInterface
+     * @return string
      */
-    public function getToken($code, $aspsp, $clientId, $redirectUri, $codeVerifier): StreamInterface
+    public function getToken($code, $aspsp, $clientId, $redirectUri, $codeVerifier): string
     {
         // TODO Put address in config file.
         $url = 'https://apis-i.redsys.es:20443/psd2/xs2a/api-oauth-xs2a/services/rest/' . $aspsp . '/token';
@@ -61,7 +61,7 @@ final class RedsysRequests
             ],
             'debug' => false,
         ]);
-        return $res->getBody();
+        return $res->getBody()->getContents();
     }
 
     /**
@@ -71,9 +71,9 @@ final class RedsysRequests
      * @param $digest
      * @param $signature
      * @param $redirectUrl
-     * @return StreamInterface
+     * @return string
      */
-    public function initPayment($payload, $requestId, $psuIp, $digest, $signature, $redirectUrl): StreamInterface
+    public function initPayment($payload, $requestId, $psuIp, $digest, $signature, $redirectUrl): string
     {
         $localHeaders = [
             'X-Request-ID' => $requestId,
@@ -90,7 +90,7 @@ final class RedsysRequests
             'headers' => $headers,
             'body' => $payload,
         ]);
-        return $res->getBody();
+        return $res->getBody()->getContents();
     }
 
     /**
@@ -99,9 +99,9 @@ final class RedsysRequests
      * @param $digest
      * @param $signature
      * @param $stateUrl
-     * @return StreamInterface
+     * @return string
      */
-    public function checkPayment($requestId, $psuIp, $digest, $signature, $stateUrl): StreamInterface
+    public function checkPayment($requestId, $psuIp, $digest, $signature, $stateUrl): string
     {
         $localHeaders = [
             'X-Request-ID' => $requestId,
@@ -115,7 +115,7 @@ final class RedsysRequests
         $res = $this->client->request('GET', $this->aspsp . $stateUrl, [
             'headers' => $headers,
         ]);
-        return $res->getBody();
+        return $res->getBody()->getContents();
     }
 
     /**
@@ -124,9 +124,9 @@ final class RedsysRequests
      * @param $digest
      * @param $signature
      * @param $redirectUrl
-     * @return StreamInterface
+     * @return string
      */
-    public function initConsent($payload, $requestId, $digest, $signature, $redirectUrl): StreamInterface
+    public function initConsent($payload, $requestId, $digest, $signature, $redirectUrl): string
     {
         $localHeaders = [
             'X-Request-ID' => $requestId,
@@ -143,7 +143,7 @@ final class RedsysRequests
             'headers' => $headers,
             'body' => $payload,
         ]);
-        return $res->getBody();
+        return $res->getBody()->getContents();
     }
 
     /**
@@ -151,9 +151,9 @@ final class RedsysRequests
      * @param $digest
      * @param $signature
      * @param $consentId
-     * @return StreamInterface
+     * @return string
      */
-    public function getConsentInfo($requestId, $digest, $signature, $consentId): StreamInterface
+    public function getConsentInfo($requestId, $digest, $signature, $consentId): string
     {
         $localHeaders = [
             'X-Request-ID' => $requestId,
@@ -166,6 +166,6 @@ final class RedsysRequests
         $res = $this->client->request('GET', $this->aspsp . '/' . self::VERSION . '/consents/' . $consentId, [
             'headers' => $headers,
         ]);
-        return $res->getBody();
+        return $res->getBody()->getContents();
     }
 }
