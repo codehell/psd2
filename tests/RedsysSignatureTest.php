@@ -105,21 +105,30 @@ EOD;
             'oHf9wWZ/h39X3lM9/5lKmtS7tpBj5wPg=="';
     }
 
-    public function testGetDigest(): void
+    /**
+     * @test
+     */
+    public function get_digest(): void
     {
         $actual = (new RedsysSignature)->getDigest($this->testData);
         $expected = 'pfHPQFso5E7SlQfg9kSVhZuod4k9KnFFEtFs472L5WI=';
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGetSHA256Digest(): void
+    /**
+     * @test
+     */
+    public function get_SHA256_digest(): void
     {
         $actual = (new RedsysSignature)->getSHA256Digest($this->testData);
         $expected = 'SHA-256=pfHPQFso5E7SlQfg9kSVhZuod4k9KnFFEtFs472L5WI=';
         $this->assertEquals($expected, $actual);
     }
 
-    public function testBuildSignature(): void
+    /**
+     * @test
+     */
+    public function test_build_signature(): void
     {
         $signature = new RedsysSignature();
         $digest = $signature->getSHA256Digest($this->testData);
