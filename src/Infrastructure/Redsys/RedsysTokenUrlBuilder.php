@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2;
+namespace Psd2\Infrastructure\Redsys;
 
 
-final class RedsysTokenUrl
+final class RedsysTokenUrlBuilder
 {
     private $aspsp;
     private $clientId;
@@ -26,7 +26,7 @@ final class RedsysTokenUrl
         $this->method = $method;
     }
 
-    public function __invoke(): string
+    public function tokenUrl(): string
     {
         $data = [
             'response_type' => 'code',

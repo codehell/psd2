@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Psd2\Application;
+namespace Psd2\Infrastructure\Redsys;
 
 use GuzzleHttp\Client;
 

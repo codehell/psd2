@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
-namespace Psd2\tests;
+namespace Psd2\Tests\Domain;
 
+use Psd2\Domain\Signer;
 use PHPUnit\Framework\TestCase;
-use Psd2\Application\RedsysSignature;
 
-final class RedsysSignatureTest extends TestCase
+final class SignerTest extends TestCase
 {
     private $testData;
     private $cert;
@@ -110,7 +110,7 @@ EOD;
      */
     public function get_digest(): void
     {
-        $actual = (new RedsysSignature)->getDigest($this->testData);
+        $actual = (new Signer)->getDigest($this->testData);
         $expected = 'pfHPQFso5E7SlQfg9kSVhZuod4k9KnFFEtFs472L5WI=';
         $this->assertEquals($expected, $actual);
     }
@@ -120,7 +120,7 @@ EOD;
      */
     public function get_SHA256_digest(): void
     {
-        $actual = (new RedsysSignature)->getSHA256Digest($this->testData);
+        $actual = (new Signer)->getSHA256Digest($this->testData);
         $expected = 'SHA-256=pfHPQFso5E7SlQfg9kSVhZuod4k9KnFFEtFs472L5WI=';
         $this->assertEquals($expected, $actual);
     }
@@ -130,7 +130,7 @@ EOD;
      */
     public function test_build_signature(): void
     {
-        $signature = new RedsysSignature();
+        $signature = new Signer();
         $digest = $signature->getSHA256Digest($this->testData);
         $result = $signature->getSignature(
             $digest,
