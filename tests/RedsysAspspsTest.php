@@ -5,8 +5,8 @@ namespace Psd2\tests;
 
 use Exception;
 use Ramsey\Uuid\Uuid;
-use Psd2\RedsysAspsps;
-use Psd2\RedsysSignature;
+use Psd2\Application\RedsysSignature;
+use Psd2\Application\RedsysAspsps;
 use PHPUnit\Framework\TestCase;
 
 final class RedsysAspspsTest extends TestCase

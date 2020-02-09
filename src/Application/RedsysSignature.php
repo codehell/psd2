@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2;
+namespace Psd2\Application;
 
 final class RedsysSignature
 {

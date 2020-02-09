@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Psd2\tests;
 
 use PHPUnit\Framework\TestCase;
-use Psd2\RedsysSignature;
+use Psd2\Application\RedsysSignature;
 
 final class RedsysSignatureTest extends TestCase
 {
