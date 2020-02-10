@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace Psd2\Infrastructure\Redsys;
 
 
-final class RedsysTokenUrlBuilder
+use Psd2\Domain\TokenUrlBuilder;
+use Psd2\Domain\UrlsContainer;
+
+final class RedsysTokenUrlBuilder implements TokenUrlBuilder
 {
     private $aspsp;
     private $clientId;
@@ -15,8 +18,20 @@ final class RedsysTokenUrlBuilder
      * @var string
      */
     private $method;
+    /**
+     * @var UrlsContainer
+     */
+    private $urls;
 
-    public function __construct($aspsp, $clientId, $codeChallenge, $state, $redirectUri, $method = 'plain')
+    public function __construct(
+        UrlsContainer $urls,
+        string $aspsp,
+        string $clientId,
+        string $codeChallenge,
+        string $state,
+        string $redirectUri,
+        string $method = 'plain'
+    )
     {
         $this->aspsp = $aspsp;
         $this->clientId = $clientId;
@@ -24,9 +39,10 @@ final class RedsysTokenUrlBuilder
         $this->state = $state;
         $this->redirectUri = $redirectUri;
         $this->method = $method;
+        $this->urls = $urls;
     }
 
-    public function tokenUrl(): string
+    public function __invoke(): string
     {
         $data = [
             'response_type' => 'code',
@@ -38,7 +54,7 @@ final class RedsysTokenUrlBuilder
             'code_challenge_method' => $this->method,
         ];
         $endpoint = http_build_query($data, '', '&', PHP_QUERY_RFC3986);
-        return 'https://apis-i.redsys.es:20443/psd2/xs2a/api-oauth-xs2a/services/rest/' .
+        return $this->urls->tokenRequest() .
             $this->aspsp . '/authorize?' . $endpoint;
     }
 }

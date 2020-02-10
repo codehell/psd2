@@ -6,6 +6,7 @@ namespace Psd2\Infrastructure;
 
 use GuzzleHttp\Client;
 use Psd2\Domain\PaymentRequests;
+use Psd2\Domain\UrlsContainer;
 
 final class RedsysPaymentRequests implements PaymentRequests
 {
@@ -17,17 +18,18 @@ final class RedsysPaymentRequests implements PaymentRequests
     private $certificate;
 
     /**
-     * Requests constructor.
-     * @param $aspsp
-     * @param $token
-     * @param $clientId
-     * @param $certificate
+     * RedsysPaymentRequests constructor.
+     * @param UrlsContainer $urls
+     * @param string $aspsp
+     * @param string $token
+     * @param string $clientId
+     * @param string $certificate
      */
-    public function __construct($aspsp, $token, $clientId, $certificate)
+    public function __construct(UrlsContainer $urls, string $aspsp, string $token, string $clientId, string $certificate)
     {
         $this->certificate = $certificate;
         $this->client = new Client([
-            'base_uri' => "https://apis-i.redsys.es:20443/psd2/xs2a/api-entrada-xs2a/services/"
+            'base_uri' => $urls->baseUrl()
         ]);
         $this->headers = [
             'accept' => 'application/json',
@@ -39,7 +41,17 @@ final class RedsysPaymentRequests implements PaymentRequests
         $this->clientId = $clientId;
     }
 
-    public function initPayment($payload, $requestId, $psuIp, $digest, $signature, $redirectUrl): string
+    /**
+     * {@inheritDoc}
+     */
+    public function initPayment(
+        string $payload,
+        string $requestId,
+        string $psuIp,
+        string $digest,
+        string $signature,
+        string $redirectUrl
+    ): string
     {
         $localHeaders = [
             'X-Request-ID' => $requestId,
@@ -59,7 +71,16 @@ final class RedsysPaymentRequests implements PaymentRequests
         return $res->getBody()->getContents();
     }
 
-    public function checkPayment($requestId, $psuIp, $digest, $signature, $stateUrl): string
+    /**
+     * {@inheritDoc}
+     */
+    public function checkPayment(
+        string $requestId,
+        string $psuIp,
+        string $digest,
+        string $signature,
+        string $stateUrl
+    ): string
     {
         $localHeaders = [
             'X-Request-ID' => $requestId,

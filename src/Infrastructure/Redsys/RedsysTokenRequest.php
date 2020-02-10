@@ -1,11 +1,10 @@
 <?php
-
-
+declare(strict_types=1);
 namespace Psd2\Infrastructure;
-
 
 use GuzzleHttp\Client;
 use Psd2\Domain\TokenRequest;
+use Psd2\Domain\UrlsContainer;
 
 final class RedsysTokenRequest implements TokenRequest
 {
@@ -17,17 +16,14 @@ final class RedsysTokenRequest implements TokenRequest
     private $certificate;
 
     /**
-     * Requests constructor.
-     * @param $aspsp
-     * @param $token
-     * @param $clientId
-     * @param $certificate
+     * RedsysTokenRequest constructor.
+     * {@inheritDoc}
      */
-    public function __construct($aspsp, $token, $clientId, $certificate)
+    public function __construct(UrlsContainer $urls, string $aspsp, string $token, string $clientId, string $certificate)
     {
         $this->certificate = $certificate;
         $this->client = new Client([
-            'base_uri' => "https://apis-i.redsys.es:20443/psd2/xs2a/api-entrada-xs2a/services/"
+            'base_uri' => $urls->tokenRequest()
         ]);
         $this->headers = [
             'accept' => 'application/json',
@@ -40,14 +36,9 @@ final class RedsysTokenRequest implements TokenRequest
     }
 
     /**
-     * @param $code
-     * @param $aspsp
-     * @param $clientId
-     * @param $redirectUri
-     * @param $codeVerifier
-     * @return string
+     * {@inheritDoc}
      */
-    public function getToken($code, $aspsp, $clientId, $redirectUri, $codeVerifier): string
+    public function getToken(string $code, string $aspsp, string $clientId, string $redirectUri, string $codeVerifier): string
     {
         // TODO Put address in config file.
         $url = 'https://apis-i.redsys.es:20443/psd2/xs2a/api-oauth-xs2a/services/rest/' . $aspsp . '/token';

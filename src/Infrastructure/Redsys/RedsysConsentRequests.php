@@ -4,6 +4,7 @@ namespace Psd2\Infrastructure;
 
 use GuzzleHttp\Client;
 use Psd2\Domain\ConsentRequests;
+use Psd2\Domain\UrlsContainer;
 
 final class RedsysConsentRequests implements ConsentRequests
 {
@@ -13,19 +14,17 @@ final class RedsysConsentRequests implements ConsentRequests
     private $clientId;
     private $headers;
     private $certificate;
+    private $token;
 
     /**
-     * Requests constructor.
-     * @param $aspsp
-     * @param $token
-     * @param $clientId
-     * @param $certificate
+     * RedsysConsentRequests constructor.
+     * {@inheritDoc}
      */
-    public function __construct($aspsp, $token, $clientId, $certificate)
+    public function __construct(UrlsContainer $urls, string $aspsp, string $token, string $clientId, string $certificate)
     {
         $this->certificate = $certificate;
         $this->client = new Client([
-            'base_uri' => "https://apis-i.redsys.es:20443/psd2/xs2a/api-entrada-xs2a/services/"
+            'base_uri' => $urls->baseUrl()
         ]);
         $this->headers = [
             'accept' => 'application/json',
@@ -35,15 +34,11 @@ final class RedsysConsentRequests implements ConsentRequests
         ];
         $this->aspsp = $aspsp;
         $this->clientId = $clientId;
+        $this->token = $token;
     }
 
     /**
-     * @param $payload
-     * @param $requestId
-     * @param $digest
-     * @param $signature
-     * @param $redirectUrl
-     * @return string
+     * {@inheritDoc}
      */
     public function initConsent($payload, $requestId, $digest, $signature, $redirectUrl): string
     {
@@ -66,11 +61,7 @@ final class RedsysConsentRequests implements ConsentRequests
     }
 
     /**
-     * @param $requestId
-     * @param $digest
-     * @param $signature
-     * @param $consentId
-     * @return string
+     * {@inheritDoc}
      */
     public function getConsentInfo($requestId, $digest, $signature, $consentId): string
     {
