@@ -43,7 +43,11 @@ final class RedsysConsentRequests implements ConsentRequests
 
     /**
      * RedsysConsentRequests constructor.
-     * {@inheritDoc}
+     * @param string $aspsp
+     * @param string $token
+     * @param string $clientId
+     * @param string $certificate
+     * @param string $version
      */
     public function __construct(string $aspsp, string $token, string $clientId, string $certificate, string $version = 'v1')
     {

@@ -12,6 +12,10 @@ trait SetUrls
      * @var Urls
      */
     protected $urls;
+
+    /**
+     * @param Urls $urls
+     */
     public function setUrls(Urls $urls)
     {
         $this->urls = $urls;

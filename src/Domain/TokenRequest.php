@@ -6,10 +6,8 @@ namespace Psd2\Domain;
 
 use App\Domain\DomainException\Psd2UrlNotSetException;
 
-interface TokenRequest
+interface TokenRequest extends SetUrls
 {
-    public function setUrls(Urls $urls);
-
     /**
      * @param string $code
      * @param string $clientId

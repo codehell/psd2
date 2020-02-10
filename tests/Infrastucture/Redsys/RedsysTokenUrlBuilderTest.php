@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Psd2\Tests\Infrastructure\Redsys;
 
+use App\Domain\DomainException\Psd2UrlNotSetException;
 use PHPUnit\Framework\TestCase;
 use Psd2\Infrastructure\Redsys\RedsysSandboxUrls;
 use Psd2\Infrastructure\Redsys\RedsysTokenUrlBuilder;
@@ -11,6 +12,7 @@ class RedsysTokenUrlBuilderTest extends TestCase
 {
     /**
      * @test
+     * @throws Psd2UrlNotSetException
      */
     public function it_return_token_url()
     {
@@ -18,7 +20,6 @@ class RedsysTokenUrlBuilderTest extends TestCase
         $pkce = '123asqwerpoiulakj230947lsaksnfa';
         $urls = new RedsysSandboxUrls();
         $tokenUrl = new RedsysTokenUrlBuilder(
-            $urls,
             'bancosantander',
             '00000-000-00000',
             $pkce,
@@ -26,6 +27,7 @@ class RedsysTokenUrlBuilderTest extends TestCase
             '/',
             'SHA256'
         );
+        $tokenUrl->setUrls($urls);
         $result = $tokenUrl();
         self::assertEquals($expected, $result);
     }

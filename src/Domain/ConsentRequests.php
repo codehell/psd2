@@ -6,14 +6,8 @@ namespace Psd2\Domain;
 
 use App\Domain\DomainException\Psd2UrlNotSetException;
 
-interface ConsentRequests
+interface ConsentRequests extends SetUrls
 {
-    /**
-     * @param Urls $urls
-     * @return mixed
-     */
-    public function setUrls(Urls $urls);
-
     /**
      * @param string $payload
      * @param string $requestId

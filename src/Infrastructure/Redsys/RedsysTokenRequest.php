@@ -35,7 +35,10 @@ final class RedsysTokenRequest implements TokenRequest
 
     /**
      * RedsysTokenRequest constructor.
-     * {@inheritDoc}
+     * @param string $aspsp
+     * @param string $token
+     * @param string $clientId
+     * @param string $certificate
      */
     public function __construct(string $aspsp, string $token, string $clientId, string $certificate)
     {

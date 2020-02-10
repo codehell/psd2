@@ -5,10 +5,13 @@ namespace Psd2\Infrastructure\Redsys;
 
 
 use Psd2\Domain\TokenUrlBuilder;
-use Psd2\Domain\Urls;
+use Psd2\Domain\DomainTraits\SetUrls;
+use App\Domain\DomainException\Psd2UrlNotSetException;
 
 final class RedsysTokenUrlBuilder implements TokenUrlBuilder
 {
+    use SetUrls;
+
     private $aspsp;
     private $clientId;
     private $codeChallenge;
@@ -18,13 +21,17 @@ final class RedsysTokenUrlBuilder implements TokenUrlBuilder
      * @var string
      */
     private $method;
-    /**
-     * @var Urls
-     */
-    private $urls;
 
+    /**
+     * RedsysTokenUrlBuilder constructor.
+     * @param string $aspsp
+     * @param string $clientId
+     * @param string $codeChallenge
+     * @param string $state
+     * @param string $redirectUri
+     * @param string $method
+     */
     public function __construct(
-        Urls $urls,
         string $aspsp,
         string $clientId,
         string $codeChallenge,
@@ -39,11 +46,16 @@ final class RedsysTokenUrlBuilder implements TokenUrlBuilder
         $this->state = $state;
         $this->redirectUri = $redirectUri;
         $this->method = $method;
-        $this->urls = $urls;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function __invoke(): string
     {
+        if (is_null($this->urls)) {
+            throw new Psd2UrlNotSetException;
+        }
         $data = [
             'response_type' => 'code',
             'client_id' => $this->clientId,

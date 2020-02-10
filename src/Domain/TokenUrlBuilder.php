@@ -4,16 +4,13 @@
 namespace Psd2\Domain;
 
 
-interface TokenUrlBuilder
+use App\Domain\DomainException\Psd2UrlNotSetException;
+
+interface TokenUrlBuilder extends SetUrls
 {
-    public function __construct(
-        Urls $urls,
-        string $aspsp,
-        string $clientId,
-        string $codeChallenge,
-        string $state,
-        string $redirectUri,
-        string $method = 'plain'
-    );
+    /**
+     * @return string
+     * @throws Psd2UrlNotSetException
+     */
     public function __invoke(): string;
 }
