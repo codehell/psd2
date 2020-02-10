@@ -4,17 +4,11 @@
 namespace Psd2\Domain;
 
 
+use App\Domain\DomainException\Psd2UrlNotSetException;
+
 interface TokenRequest
 {
-    /**
-     * TokenRequest constructor.
-     * @param Urls $urls
-     * @param string $aspsp
-     * @param string $token
-     * @param string $clientId
-     * @param string $certificate
-     */
-    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate);
+    public function setUrls(Urls $urls);
 
     /**
      * @param string $code
@@ -22,6 +16,7 @@ interface TokenRequest
      * @param string $redirectUri
      * @param string $codeVerifier
      * @return string
+     * @throws Psd2UrlNotSetException
      */
     public function getToken(string $code, string $clientId, string$redirectUri, string $codeVerifier): string;
 }

@@ -1,14 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace Psd2\Infrastructure;
 
 use App\Domain\DomainException\Psd2UrlNotSetException;
 use GuzzleHttp\Client;
 use Psd2\Domain\ConsentRequests;
+use Psd2\Domain\DomainTraits\SetUrls;
 use Psd2\Domain\Urls;
 
 final class RedsysConsentRequests implements ConsentRequests
 {
+    use SetUrls;
     /**
      * @var string
      */
@@ -55,11 +58,6 @@ final class RedsysConsentRequests implements ConsentRequests
         $this->clientId = $clientId;
         $this->token = $token;
         $this->version = $version;
-    }
-
-    public function setUrls(Urls $urls)
-    {
-        $this->urls = $urls;
     }
 
     /**

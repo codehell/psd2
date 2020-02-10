@@ -2,16 +2,16 @@
 declare(strict_types=1);
 namespace Psd2\Infrastructure;
 
+use App\Domain\DomainException\Psd2UrlNotSetException;
 use GuzzleHttp\Client;
+use Psd2\Domain\DomainTraits\SetUrls;
 use Psd2\Domain\TokenRequest;
 use Psd2\Domain\Urls;
 
 final class RedsysTokenRequest implements TokenRequest
 {
-    /**
-     * @var Urls
-     */
-    private $urls;
+    use SetUrls;
+
     /**
      * @var string
      */
@@ -29,10 +29,6 @@ final class RedsysTokenRequest implements TokenRequest
      */
     private $certificate;
     /**
-     * @var Client
-     */
-    private $client;
-    /**
      * @var array
      */
     private $headers;
@@ -41,18 +37,14 @@ final class RedsysTokenRequest implements TokenRequest
      * RedsysTokenRequest constructor.
      * {@inheritDoc}
      */
-    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate)
+    public function __construct(string $aspsp, string $token, string $clientId, string $certificate)
     {
-        $this->client = new Client([
-            'base_uri' => $urls->tokenRequestUrl()
-        ]);
         $this->headers = [
             'accept' => 'application/json',
             'content-type' => 'application/json',
             'Authorization' => 'Bearer ' . $token,
             'TPP-Signature-Certificate' => $certificate,
         ];
-        $this->urls = $urls;
         $this->aspsp = $aspsp;
         $this->token = $token;
         $this->clientId = $clientId;
@@ -64,6 +56,9 @@ final class RedsysTokenRequest implements TokenRequest
      */
     public function getToken(string $code, string $clientId, string $redirectUri, string $codeVerifier): string
     {
+        if (is_null($this->urls)) {
+            throw new Psd2UrlNotSetException;
+        }
         $url = $this->urls->tokenRequestUrl() . $this->aspsp . '/token';
         $client = new Client();
         $res = $client->request('POST', $url, [

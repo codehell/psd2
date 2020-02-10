@@ -20,8 +20,8 @@ interface ConsentRequests
      * @param string $digest
      * @param string $signature
      * @param string $redirectUrl
-     * @throws Psd2UrlNotSetException
      * @return string
+     * @throws Psd2UrlNotSetException
      */
     public function initConsent(string $payload, string $requestId, string $digest, string $signature, string $redirectUrl): string;
 
@@ -30,8 +30,8 @@ interface ConsentRequests
      * @param string $digest
      * @param string $signature
      * @param string $consentId
-     * @throws Psd2UrlNotSetException
      * @return string
+     * @throws Psd2UrlNotSetException
      */
     public function getConsentInfo(string $requestId, string $digest, string $signature, string $consentId): string;
 }
