@@ -4,12 +4,12 @@
 namespace Psd2\Infrastructure\Redsys;
 
 
-use Psd2\Domain\UrlsContainer;
+use Psd2\Domain\Urls;
 
-class RedsysSandboxUrlsContainer implements UrlsContainer
+final class RedsysSandboxUrls implements Urls
 {
 
-    public function tokenRequest(): string
+    public function tokenRequestUrl(): string
     {
         return 'https://apis-i.redsys.es:20443/psd2/xs2a/api-oauth-xs2a/services/rest/';
     }

@@ -6,7 +6,7 @@ namespace Psd2\Domain;
 
 interface PaymentRequests
 {
-    public function __construct(UrlsContainer $urls, string $aspsp, string $token, string $clientId, string $certificate);
+    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate);
 
     /**
      * @param string $payload

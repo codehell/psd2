@@ -4,26 +4,47 @@ namespace Psd2\Infrastructure;
 
 use GuzzleHttp\Client;
 use Psd2\Domain\TokenRequest;
-use Psd2\Domain\UrlsContainer;
+use Psd2\Domain\Urls;
 
 final class RedsysTokenRequest implements TokenRequest
 {
-
-    private $client;
+    /**
+     * @var Urls
+     */
+    private $urls;
+    /**
+     * @var string
+     */
     private $aspsp;
+    /**
+     * @var string
+     */
+    private $token;
+    /**
+     * @var string
+     */
     private $clientId;
-    private $headers;
+    /**
+     * @var string
+     */
     private $certificate;
+    /**
+     * @var Client
+     */
+    private $client;
+    /**
+     * @var array
+     */
+    private $headers;
 
     /**
      * RedsysTokenRequest constructor.
      * {@inheritDoc}
      */
-    public function __construct(UrlsContainer $urls, string $aspsp, string $token, string $clientId, string $certificate)
+    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate)
     {
-        $this->certificate = $certificate;
         $this->client = new Client([
-            'base_uri' => $urls->tokenRequest()
+            'base_uri' => $urls->tokenRequestUrl()
         ]);
         $this->headers = [
             'accept' => 'application/json',
@@ -31,17 +52,19 @@ final class RedsysTokenRequest implements TokenRequest
             'Authorization' => 'Bearer ' . $token,
             'TPP-Signature-Certificate' => $certificate,
         ];
+        $this->urls = $urls;
         $this->aspsp = $aspsp;
+        $this->token = $token;
         $this->clientId = $clientId;
+        $this->certificate = $certificate;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getToken(string $code, string $aspsp, string $clientId, string $redirectUri, string $codeVerifier): string
+    public function getToken(string $code, string $clientId, string $redirectUri, string $codeVerifier): string
     {
-        // TODO Put address in config file.
-        $url = 'https://apis-i.redsys.es:20443/psd2/xs2a/api-oauth-xs2a/services/rest/' . $aspsp . '/token';
+        $url = $this->urls->tokenRequestUrl() . $this->aspsp . '/token';
         $client = new Client();
         $res = $client->request('POST', $url, [
             'form_params' => [

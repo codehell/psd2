@@ -6,7 +6,7 @@ namespace Psd2\Infrastructure;
 
 use GuzzleHttp\Client;
 use Psd2\Domain\PaymentRequests;
-use Psd2\Domain\UrlsContainer;
+use Psd2\Domain\Urls;
 
 final class RedsysPaymentRequests implements PaymentRequests
 {
@@ -19,13 +19,13 @@ final class RedsysPaymentRequests implements PaymentRequests
 
     /**
      * RedsysPaymentRequests constructor.
-     * @param UrlsContainer $urls
+     * @param Urls $urls
      * @param string $aspsp
      * @param string $token
      * @param string $clientId
      * @param string $certificate
      */
-    public function __construct(UrlsContainer $urls, string $aspsp, string $token, string $clientId, string $certificate)
+    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate)
     {
         $this->certificate = $certificate;
         $this->client = new Client([

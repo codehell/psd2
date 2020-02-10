@@ -4,8 +4,8 @@
 namespace Psd2\Domain;
 
 
-interface UrlsContainer
+interface Urls
 {
-    public function tokenRequest(): string;
+    public function tokenRequestUrl(): string;
     public function baseUrl(): string;
 }

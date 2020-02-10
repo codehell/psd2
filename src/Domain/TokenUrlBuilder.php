@@ -7,7 +7,7 @@ namespace Psd2\Domain;
 interface TokenUrlBuilder
 {
     public function __construct(
-        UrlsContainer $urls,
+        Urls $urls,
         string $aspsp,
         string $clientId,
         string $codeChallenge,

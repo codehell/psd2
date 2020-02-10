@@ -5,7 +5,7 @@ namespace Psd2\Infrastructure\Redsys;
 
 
 use Psd2\Domain\TokenUrlBuilder;
-use Psd2\Domain\UrlsContainer;
+use Psd2\Domain\Urls;
 
 final class RedsysTokenUrlBuilder implements TokenUrlBuilder
 {
@@ -19,12 +19,12 @@ final class RedsysTokenUrlBuilder implements TokenUrlBuilder
      */
     private $method;
     /**
-     * @var UrlsContainer
+     * @var Urls
      */
     private $urls;
 
     public function __construct(
-        UrlsContainer $urls,
+        Urls $urls,
         string $aspsp,
         string $clientId,
         string $codeChallenge,
@@ -54,7 +54,7 @@ final class RedsysTokenUrlBuilder implements TokenUrlBuilder
             'code_challenge_method' => $this->method,
         ];
         $endpoint = http_build_query($data, '', '&', PHP_QUERY_RFC3986);
-        return $this->urls->tokenRequest() .
+        return $this->urls->tokenRequestUrl() .
             $this->aspsp . '/authorize?' . $endpoint;
     }
 }

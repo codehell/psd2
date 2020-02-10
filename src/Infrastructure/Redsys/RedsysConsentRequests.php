@@ -4,7 +4,7 @@ namespace Psd2\Infrastructure;
 
 use GuzzleHttp\Client;
 use Psd2\Domain\ConsentRequests;
-use Psd2\Domain\UrlsContainer;
+use Psd2\Domain\Urls;
 
 final class RedsysConsentRequests implements ConsentRequests
 {
@@ -20,7 +20,7 @@ final class RedsysConsentRequests implements ConsentRequests
      * RedsysConsentRequests constructor.
      * {@inheritDoc}
      */
-    public function __construct(UrlsContainer $urls, string $aspsp, string $token, string $clientId, string $certificate)
+    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate)
     {
         $this->certificate = $certificate;
         $this->client = new Client([

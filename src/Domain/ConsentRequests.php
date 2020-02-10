@@ -8,13 +8,13 @@ interface ConsentRequests
 {
     /**
      * ConsentRequests constructor.
-     * @param UrlsContainer $urls
+     * @param Urls $urls
      * @param string $aspsp
      * @param string $token
      * @param string $clientId
      * @param string $certificate
      */
-    public function __construct(UrlsContainer $urls, string $aspsp, string $token, string $clientId, string $certificate);
+    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate);
 
     /**
      * @param string $payload
