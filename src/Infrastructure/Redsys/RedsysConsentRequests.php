@@ -2,30 +2,49 @@
 
 namespace Psd2\Infrastructure;
 
+use App\Domain\DomainException\Psd2UrlNotSetException;
 use GuzzleHttp\Client;
 use Psd2\Domain\ConsentRequests;
 use Psd2\Domain\Urls;
 
 final class RedsysConsentRequests implements ConsentRequests
 {
-    const VERSION = 'v1';
-    private $client;
+    /**
+     * @var string
+     */
     private $aspsp;
+    /**
+     * @var string
+     */
     private $clientId;
+    /**
+     * @var array
+     */
     private $headers;
+    /**
+     * @var string
+     */
     private $certificate;
+    /**
+     * @var string
+     */
     private $token;
+    /**
+     * @var Urls
+     */
+    private $urls;
+    /**
+     * @var string
+     */
+    private $version;
 
     /**
      * RedsysConsentRequests constructor.
      * {@inheritDoc}
      */
-    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate)
+    public function __construct(string $aspsp, string $token, string $clientId, string $certificate, string $version = 'v1')
     {
         $this->certificate = $certificate;
-        $this->client = new Client([
-            'base_uri' => $urls->baseUrl()
-        ]);
         $this->headers = [
             'accept' => 'application/json',
             'content-type' => 'application/json',
@@ -35,6 +54,12 @@ final class RedsysConsentRequests implements ConsentRequests
         $this->aspsp = $aspsp;
         $this->clientId = $clientId;
         $this->token = $token;
+        $this->version = $version;
+    }
+
+    public function setUrls(Urls $urls)
+    {
+        $this->urls = $urls;
     }
 
     /**
@@ -42,6 +67,13 @@ final class RedsysConsentRequests implements ConsentRequests
      */
     public function initConsent($payload, $requestId, $digest, $signature, $redirectUrl): string
     {
+        if (is_null($this->urls)) {
+            throw new Psd2UrlNotSetException;
+        }
+        $client = new Client([
+            'base_uri' => $this->urls->baseUrl()
+        ]);
+
         $localHeaders = [
             'X-Request-ID' => $requestId,
             'X-IBM-Client-Id' => $this->clientId,
@@ -52,8 +84,8 @@ final class RedsysConsentRequests implements ConsentRequests
             'Signature' => $signature,
         ];
         $headers = array_merge($this->headers, $localHeaders);
-        // dd($payload);
-        $res = $this->client->request('POST', $this->aspsp . '/' . self::VERSION . '/consents', [
+
+        $res = $client->request('POST', $this->aspsp . '/' . $this->version . '/consents', [
             'headers' => $headers,
             'body' => $payload,
         ]);
@@ -65,6 +97,13 @@ final class RedsysConsentRequests implements ConsentRequests
      */
     public function getConsentInfo($requestId, $digest, $signature, $consentId): string
     {
+        if (is_null($this->urls)) {
+            throw new Psd2UrlNotSetException;
+        }
+        $client = new Client([
+            'base_uri' => $this->urls->baseUrl()
+        ]);
+
         $localHeaders = [
             'X-Request-ID' => $requestId,
             'X-IBM-Client-Id' => $this->clientId,
@@ -73,7 +112,7 @@ final class RedsysConsentRequests implements ConsentRequests
             'Signature' => $signature,
         ];
         $headers = array_merge($this->headers, $localHeaders);
-        $res = $this->client->request('GET', $this->aspsp . '/' . self::VERSION . '/consents/' . $consentId, [
+        $res = $client->request('GET', $this->aspsp . '/' . $this->version . '/consents/' . $consentId, [
             'headers' => $headers,
         ]);
         return $res->getBody()->getContents();
