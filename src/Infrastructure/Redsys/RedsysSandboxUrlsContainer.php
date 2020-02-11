@@ -4,9 +4,9 @@
 namespace Psd2\Infrastructure\Redsys;
 
 
-use Psd2\Domain\Urls;
+use Psd2\Domain\UrlsContainer;
 
-final class RedsysSandboxUrls implements Urls
+final class RedsysSandboxUrlsContainer implements UrlsContainer
 {
 
     public function tokenRequestUrl(): string

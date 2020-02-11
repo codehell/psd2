@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace Psd2\Domain\DomainTraits;
 
 
-use Psd2\Domain\Urls;
+use Psd2\Domain\UrlsContainer;
 
 trait SetUrls
 {
     /**
-     * @var Urls
+     * @var UrlsContainer
      */
     protected $urls;
 
     /**
-     * @param Urls $urls
+     * @param UrlsContainer $urls
      */
-    public function setUrls(Urls $urls)
+    public function setUrls(UrlsContainer $urls)
     {
         $this->urls = $urls;
     }

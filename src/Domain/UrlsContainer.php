@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
 
 
 namespace Psd2\Domain;
 
-
-interface Urls
+interface UrlsContainer
 {
     public function tokenRequestUrl(): string;
     public function baseUrl(): string;

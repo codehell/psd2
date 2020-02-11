@@ -1,22 +1,23 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Psd2\Application\Redsys;
 
-use Psd2\Domain\TokenRequest;
 
-final class TokenRequester
+use Psd2\Domain\TokenRequester;
+
+final class RequestTokenService
 {
     /**
-     * @var TokenRequest
+     * @var TokenRequester
      */
     private $request;
 
     /**
      * TokenRequester constructor.
-     * @param TokenRequest $request
+     * @param TokenRequester $request
      */
-    public function __construct(TokenRequest $request)
+    public function __construct(TokenRequester $request)
     {
         $this->request = $request;
     }

@@ -4,9 +4,9 @@
 namespace Psd2\Infrastructure\Abanca;
 
 
-use Psd2\Domain\Urls;
+use Psd2\Domain\UrlsContainer;
 
-class AbancaSandboxUrls implements Urls
+class AbancaSandboxUrlsContainer implements UrlsContainer
 {
     public function tokenRequestUrl(): string
     {

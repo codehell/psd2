@@ -1,15 +1,16 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Psd2\Application\Redsys;
 
 
+use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 use Psd2\Domain\TokenUrlBuilder as TokenUrlGenerator;
 
-final class TokenUrlBuilder
+final class BuildTokenUrlService
 {
     /**
-     * @var TokenUrlBuilder
+     * @var BuildTokenUrlService
      */
     private $urlBuilder;
 
@@ -22,6 +23,10 @@ final class TokenUrlBuilder
         $this->urlBuilder = $urlBuilder;
     }
 
+    /**
+     * @return string
+     * @throws Psd2UrlNotSetException
+     */
     public function __invoke(): string
     {
        return $this->urlBuilder->__invoke();

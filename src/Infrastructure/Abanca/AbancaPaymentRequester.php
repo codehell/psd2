@@ -7,9 +7,9 @@ namespace Psd2\Infrastructure\Abanca;
 use GuzzleHttp\Client;
 use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 use Psd2\Domain\DomainTraits\SetUrls;
-use Psd2\Domain\PaymentRequest;
+use Psd2\Domain\PaymentRequester;
 
-class AbancaPaymentRequest implements PaymentRequest
+class AbancaPaymentRequester implements PaymentRequester
 {
     use SetUrls;
     /**

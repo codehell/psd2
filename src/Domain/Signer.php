@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Psd2\Domain;
 
+
 final class Signer
 {
     public function getSignature($digest, $uuid, $privateKey, $redirectUrl = null): string

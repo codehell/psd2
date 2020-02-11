@@ -1,13 +1,12 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Psd2\Domain;
 
 
-
 use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
-interface TokenRequest extends SetUrls
+interface TokenRequester extends UrlsSetter
 {
     /**
      * @param string $code

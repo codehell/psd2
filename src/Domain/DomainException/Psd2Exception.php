@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Psd2\Domain\DomainException;
 
+
 use Exception;
 
 abstract class Psd2Exception extends Exception

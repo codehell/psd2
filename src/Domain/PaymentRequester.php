@@ -1,12 +1,12 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Psd2\Domain;
 
 
 use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
-interface PaymentRequest extends SetUrls
+interface PaymentRequester extends UrlsSetter
 {
     /**
      * @param string $requestId

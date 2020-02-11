@@ -5,11 +5,11 @@ namespace Psd2\Infrastructure;
 
 
 use GuzzleHttp\Client;
-use Psd2\Domain\PaymentRequest;
+use Psd2\Domain\PaymentRequester;
 use Psd2\Domain\DomainTraits\SetUrls;
 use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
-final class RedsysPaymentRequest implements PaymentRequest
+final class RedsysPaymentRequester implements PaymentRequester
 {
     use SetUrls;
 
