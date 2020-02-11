@@ -2,11 +2,10 @@
 declare(strict_types=1);
 namespace Psd2\Infrastructure;
 
-use App\Domain\DomainException\Psd2UrlNotSetException;
 use GuzzleHttp\Client;
-use Psd2\Domain\DomainTraits\SetUrls;
 use Psd2\Domain\TokenRequest;
-use Psd2\Domain\Urls;
+use Psd2\Domain\DomainTraits\SetUrls;
+use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
 final class RedsysTokenRequest implements TokenRequest
 {

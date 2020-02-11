@@ -3,42 +3,18 @@ declare(strict_types=1);
 
 namespace Psd2\Infrastructure;
 
-use App\Domain\DomainException\Psd2UrlNotSetException;
 use GuzzleHttp\Client;
 use Psd2\Domain\ConsentRequests;
 use Psd2\Domain\DomainTraits\SetUrls;
-use Psd2\Domain\Urls;
+use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
 final class RedsysConsentRequests implements ConsentRequests
 {
     use SetUrls;
-    /**
-     * @var string
-     */
+
     private $aspsp;
-    /**
-     * @var string
-     */
     private $clientId;
-    /**
-     * @var array
-     */
     private $headers;
-    /**
-     * @var string
-     */
-    private $certificate;
-    /**
-     * @var string
-     */
-    private $token;
-    /**
-     * @var Urls
-     */
-    private $urls;
-    /**
-     * @var string
-     */
     private $version;
 
     /**
@@ -51,7 +27,6 @@ final class RedsysConsentRequests implements ConsentRequests
      */
     public function __construct(string $aspsp, string $token, string $clientId, string $certificate, string $version = 'v1')
     {
-        $this->certificate = $certificate;
         $this->headers = [
             'accept' => 'application/json',
             'content-type' => 'application/json',
@@ -60,7 +35,6 @@ final class RedsysConsentRequests implements ConsentRequests
         ];
         $this->aspsp = $aspsp;
         $this->clientId = $clientId;
-        $this->token = $token;
         $this->version = $version;
     }
 

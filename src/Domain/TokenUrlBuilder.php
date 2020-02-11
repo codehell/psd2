@@ -4,7 +4,8 @@
 namespace Psd2\Domain;
 
 
-use App\Domain\DomainException\Psd2UrlNotSetException;
+
+use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
 interface TokenUrlBuilder extends SetUrls
 {

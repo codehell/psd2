@@ -4,10 +4,10 @@
 namespace Psd2\Domain;
 
 
-interface PaymentRequests
-{
-    public function __construct(Urls $urls, string $aspsp, string $token, string $clientId, string $certificate);
+use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
+interface PaymentRequests extends SetUrls
+{
     /**
      * @param string $payload
      * @param string $requestId
@@ -16,6 +16,7 @@ interface PaymentRequests
      * @param string $signature
      * @param string $redirectUrl
      * @return string
+     * @throws Psd2UrlNotSetException
      */
     public function initPayment(
         string $payload,
@@ -33,6 +34,7 @@ interface PaymentRequests
      * @param string $signature
      * @param string $stateUrl
      * @return string
+     * @throws Psd2UrlNotSetException
      */
     public function checkPayment(
         string $requestId,

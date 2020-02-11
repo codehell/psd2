@@ -6,7 +6,7 @@ namespace Psd2\Infrastructure\Redsys;
 
 use Psd2\Domain\TokenUrlBuilder;
 use Psd2\Domain\DomainTraits\SetUrls;
-use App\Domain\DomainException\Psd2UrlNotSetException;
+use Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
 final class RedsysTokenUrlBuilder implements TokenUrlBuilder
 {
@@ -66,7 +66,6 @@ final class RedsysTokenUrlBuilder implements TokenUrlBuilder
             'code_challenge_method' => $this->method,
         ];
         $endpoint = http_build_query($data, '', '&', PHP_QUERY_RFC3986);
-        return $this->urls->tokenRequestUrl() .
-            $this->aspsp . '/authorize?' . $endpoint;
+        return $this->urls->tokenRequestUrl() . $this->aspsp . '/authorize?' . $endpoint;
     }
 }
