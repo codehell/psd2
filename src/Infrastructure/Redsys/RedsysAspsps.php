@@ -3,8 +3,9 @@ declare(strict_types=1);
 namespace Psd2\Infrastructure\Redsys;
 
 use GuzzleHttp\Client;
+use Psd2\Domain\StringInvoker;
 
-final class RedsysAspsps
+final class RedsysAspsps implements StringInvoker
 {
     private $requestId;
     private $digest;

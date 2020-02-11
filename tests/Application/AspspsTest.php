@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Tests\Infrastructure\Redsys;
+namespace Psd2\Tests\Application\Redsys;
 
 use Exception;
+use Psd2\Application\AspspsService;
 use Ramsey\Uuid\Uuid;
 use Psd2\Domain\Signer;
 use PHPUnit\Framework\TestCase;
 use Psd2\Infrastructure\Redsys\RedsysAspsps;
 
-final class RedsysAspspsTest extends TestCase
+final class AspspsTest extends TestCase
 {
     /**
      * @test
@@ -27,12 +28,13 @@ EOD;
         }
         $signature = new Signer;
         $digest = $signature->getSHA256Digest('');
-        $pk = file_get_contents(__DIR__ . '/../../credentials/pri_key.pem');
-        $cert = file_get_contents(__DIR__ . '/../../credentials/certificate.pem');
-        $textCert = file_get_contents(__DIR__ . '/../../credentials/certificate.txt');
+        $pk = file_get_contents(__DIR__ . '/../credentials/pri_key.pem');
+        $cert = file_get_contents(__DIR__ . '/../credentials/certificate.pem');
+        $textCert = file_get_contents(__DIR__ . '/../credentials/certificate.txt');
         $generatedSignature = $signature->getSignature($digest, $requestId, $pk);
         $headerSignature = $signature->headerSignature($generatedSignature, $cert);
-        $response = new RedsysAspsps($requestId, $digest, $headerSignature, $textCert);
-        $this->assertEquals($expected, $response());
+        $redsysPort = new RedsysAspsps($requestId, $digest, $headerSignature, $textCert);
+        $aspspsService = new AspspsService($redsysPort);
+        $this->assertEquals($expected, $aspspsService->getAspsps());
     }
 }

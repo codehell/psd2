@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Application\Redsys;
+namespace Psd2\Application;
 
 
 use Psd2\Domain\TokenRequester;

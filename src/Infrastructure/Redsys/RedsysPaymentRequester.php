@@ -1,64 +1,32 @@
 <?php
 
 
-namespace Psd2\Infrastructure;
+namespace Psd2\Infrastructure\Redsys;
 
 
 use GuzzleHttp\Client;
 use Psd2\Domain\PaymentRequester;
 use Psd2\Domain\DomainTraits\SetUrls;
 use Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Psd2\Infrastructure\Redsys\Requests\Payment;
 
 final class RedsysPaymentRequester implements PaymentRequester
 {
     use SetUrls;
 
-    private $aspsp;
-    private $headers;
-    private $version;
-    private $payload;
+    private $payment;
 
-    /**
-     * RedsysPaymentRequests constructor.
-     * @param string $aspsp
-     * @param string $payload
-     * @param string $digest
-     * @param string $certificate
-     * @param string $signature
-     * @param string $version
-     * @param string $redirectUrl
-     * @param string $psuIp
-     */
-    public function __construct(
-        string $aspsp,
-        string $payload,
-        string $digest,
-        string $certificate,
-        string $signature,
-        string $version,
-        string $redirectUrl,
-        string $psuIp
-    )
+    public function __construct(Payment $payment)
     {
-        $this->headers = [
-            'accept' => 'application/json',
-            'content-type' => 'application/json',
-            'TPP-Signature-Certificate' => $certificate,
-            'PSU-IP-Address' => $psuIp,
-            'Digest' => $digest,
-            'Signature' => $signature,
-            'TPP-Redirect-URI' => $redirectUrl
-        ];
-        $this->aspsp = $aspsp;
-        $this->version = $version;
-        $this->payload = $payload;
+        $this->payment = $payment;
     }
 
     /**
      * The key is clientId
      * {@inheritDoc}
+     * @throws Psd2UrlNotSetException
      */
-    public function initPayment(string $requestId, string $token, string $key): string
+    public function initPayment(): string
     {
         if (is_null($this->urls)) {
             throw new Psd2UrlNotSetException;
@@ -67,18 +35,29 @@ final class RedsysPaymentRequester implements PaymentRequester
             'base_uri' => $this->urls->baseUrl()
         ]);
 
-        $localHeaders = [
-            'Authorization' => 'Bearer ' . $token,
-            'X-Request-ID' => $requestId,
-            'X-IBM-Client-Id' => $key,
+        $headers = [
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+            'TPP-Signature-Certificate' => $this->payment->getCertificate(),
+            'PSU-IP-Address' => $this->payment->getPsuIp(),
+            'Digest' => $this->payment->getSha256Digest(),
+            'Signature' => $this->payment->getHeaderSignature(),
+            'TPP-Redirect-URI' => $this->payment->getRedirectUri(),
+            'Authorization' => 'Bearer ' . $this->payment->getToken(),
+            'X-Request-ID' => $this->payment->getRequestId(),
+            'X-IBM-Client-Id' => $this->payment->getClientId(),
             'PSU-Http-Method' => 'POST',
             'TPP-Redirect-Preferred' => 'true',
         ];
-        $headers = array_merge($this->headers, $localHeaders);
-        $res = $client->request('POST', $this->aspsp . '/' . $this->version . '/payments/sepa-credit-transfers', [
-            'headers' => $headers,
-            'body' => $this->payload,
-        ]);
+        $res = $client->request(
+            'POST',
+            $this->payment->getAspsp() . '/' . $this->payment->getVersion() . '/sva/payments/sepa-credit-transfers',
+            [
+                'headers' => $headers,
+                'body' => $this->payment->getPayload(),
+                'debug' => true
+            ]
+        );
         return $res->getBody()->getContents();
     }
 }

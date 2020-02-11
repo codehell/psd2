@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Application\Redsys;
+namespace Psd2\Application;
 
 
 use Psd2\Domain\DomainException\Psd2UrlNotSetException;
@@ -23,8 +23,8 @@ final class RequestPaymentService
      * @return string
      * @throws Psd2UrlNotSetException
      */
-    public function __invoke($requestId, $token, $key): string
+    public function __invoke(): string
     {
-        return $this->request->initPayment($requestId, $token, $key);
+        return $this->request->initPayment();
     }
 }
