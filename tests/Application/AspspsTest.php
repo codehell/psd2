@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Tests\Application\Redsys;
+namespace Codehell\Psd2\Tests\Application\Redsys;
 
 use Exception;
-use Psd2\Application\AspspsService;
+use Codehell\Psd2\Application\AspspsService;
 use Ramsey\Uuid\Uuid;
-use Psd2\Domain\Signer;
+use Codehell\Psd2\Domain\Signer;
 use PHPUnit\Framework\TestCase;
-use Psd2\Infrastructure\Redsys\RedsysAspsps;
+use Codehell\Psd2\Infrastructure\Redsys\RedsysAspsps;
 
 final class AspspsTest extends TestCase
 {

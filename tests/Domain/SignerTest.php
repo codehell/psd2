@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
-namespace Psd2\Tests\Domain;
+namespace Codehell\Psd2\Tests\Domain;
 
-use Psd2\Domain\Signer;
+use Codehell\Psd2\Domain\Signer;
 use PHPUnit\Framework\TestCase;
 
 final class SignerTest extends TestCase

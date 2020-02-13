@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace Psd2\Infrastructure\Redsys;
+namespace Codehell\Psd2\Infrastructure\Redsys;
 
 use GuzzleHttp\Client;
-use Psd2\Domain\StringInvoker;
+use Codehell\Psd2\Domain\StringInvoker;
 
 final class RedsysAspsps implements StringInvoker
 {

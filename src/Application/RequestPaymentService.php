@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Application;
+namespace Codehell\Psd2\Application;
 
 
-use Psd2\Domain\DomainException\Psd2UrlNotSetException;
-use Psd2\Domain\PaymentRequester;
+use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Codehell\Psd2\Domain\PaymentRequester;
 
 final class RequestPaymentService
 {

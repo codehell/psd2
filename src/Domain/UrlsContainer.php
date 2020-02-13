@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 
-namespace Psd2\Domain;
+namespace Codehell\Psd2\Domain;
 
 interface UrlsContainer
 {

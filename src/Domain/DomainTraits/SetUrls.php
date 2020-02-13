@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Domain\DomainTraits;
+namespace Codehell\Psd2\Domain\DomainTraits;
 
 
-use Psd2\Domain\UrlsContainer;
+use Codehell\Psd2\Domain\UrlsContainer;
 
 trait SetUrls
 {

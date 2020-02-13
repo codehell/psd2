@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Infrastructure\Redsys;
+namespace Codehell\Psd2\Infrastructure\Redsys;
 
 
-use Psd2\Domain\TokenUrlBuilder;
-use Psd2\Domain\DomainTraits\SetUrls;
-use Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Codehell\Psd2\Domain\TokenUrlBuilder;
+use Codehell\Psd2\Domain\DomainTraits\SetUrls;
+use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
 final class RedsysTokenUrlBuilder implements TokenUrlBuilder
 {

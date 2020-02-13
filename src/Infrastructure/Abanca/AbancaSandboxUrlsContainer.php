@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Psd2\Infrastructure\Abanca;
+namespace Codehell\Psd2\Infrastructure\Abanca;
 
 
-use Psd2\Domain\UrlsContainer;
+use Codehell\Psd2\Domain\UrlsContainer;
 
 class AbancaSandboxUrlsContainer implements UrlsContainer
 {

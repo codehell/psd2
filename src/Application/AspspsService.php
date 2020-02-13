@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Application;
+namespace Codehell\Psd2\Application;
 
 
-use Psd2\Domain\StringInvoker;
+use Codehell\Psd2\Domain\StringInvoker;
 
 final class AspspsService
 {

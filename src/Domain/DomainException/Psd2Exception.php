@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Domain\DomainException;
+namespace Codehell\Psd2\Domain\DomainException;
 
 
 use Exception;

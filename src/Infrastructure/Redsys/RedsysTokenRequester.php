@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
-namespace Psd2\Infrastructure;
+namespace Codehell\Psd2\Infrastructure;
 
 use GuzzleHttp\Client;
-use Psd2\Domain\TokenRequester;
-use Psd2\Domain\DomainTraits\SetUrls;
-use Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Codehell\Psd2\Domain\TokenRequester;
+use Codehell\Psd2\Domain\DomainTraits\SetUrls;
+use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
 
 final class RedsysTokenRequester implements TokenRequester
 {

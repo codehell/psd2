@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Psd2\Infrastructure\Redsys;
+namespace Codehell\Psd2\Infrastructure\Redsys;
 
 
 use GuzzleHttp\Client;
-use Psd2\Domain\PaymentRequester;
-use Psd2\Domain\DomainTraits\SetUrls;
-use Psd2\Domain\DomainException\Psd2UrlNotSetException;
-use Psd2\Infrastructure\Redsys\Requests\Payment;
+use Codehell\Psd2\Domain\PaymentRequester;
+use Codehell\Psd2\Domain\DomainTraits\SetUrls;
+use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Codehell\Psd2\Infrastructure\Redsys\Requests\Payment;
 
 final class RedsysPaymentRequester implements PaymentRequester
 {

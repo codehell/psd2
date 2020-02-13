@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Psd2\Infrastructure\Redsys;
+namespace Codehell\Psd2\Infrastructure\Redsys;
 
 
-use Psd2\Domain\UrlsContainer;
+use Codehell\Psd2\Domain\UrlsContainer;
 
 final class RedsysSandboxUrlsContainer implements UrlsContainer
 {

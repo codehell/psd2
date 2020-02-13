@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Psd2\Infrastructure\Abanca;
+namespace Codehell\Psd2\Infrastructure\Abanca;
 
 
 use GuzzleHttp\Client;
-use Psd2\Domain\DomainException\Psd2UrlNotSetException;
-use Psd2\Domain\DomainTraits\SetUrls;
-use Psd2\Domain\PaymentRequester;
+use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Codehell\Psd2\Domain\DomainTraits\SetUrls;
+use Codehell\Psd2\Domain\PaymentRequester;
 
 class AbancaPaymentRequester implements PaymentRequester
 {

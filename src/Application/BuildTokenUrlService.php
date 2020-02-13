@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2\Application\Redsys;
+namespace Codehell\Psd2\Application\Redsys;
 
 
-use Psd2\Domain\DomainException\Psd2UrlNotSetException;
-use Psd2\Domain\TokenUrlBuilder as TokenUrlGenerator;
+use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Codehell\Psd2\Domain\TokenUrlBuilder as TokenUrlGenerator;
 
 final class BuildTokenUrlService
 {

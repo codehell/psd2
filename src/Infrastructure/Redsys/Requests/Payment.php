@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Psd2\Infrastructure\Redsys\Requests;
+namespace Codehell\Psd2\Infrastructure\Redsys\Requests;
 
 
-use Psd2\Domain\Signer;
+use Codehell\Psd2\Domain\Signer;
 
 class Payment
 {
