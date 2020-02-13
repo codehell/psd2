@@ -5,6 +5,7 @@ namespace Codehell\Psd2\Infrastructure\Redsys\Requests;
 
 
 use Codehell\Psd2\Domain\Signer;
+use Codehell\Psd2\Infrastucture\Helpers\GetDataHelper;
 
 class Payment
 {
@@ -179,12 +180,9 @@ class Payment
     /**
      * @return string
      */
-    public function getCertificate(): string
+    public function getPlainCertificate(): string
     {
-        $result = str_replace('-----BEGIN CERTIFICATE-----', '', $this->certificate);
-        $result = str_replace('-----END CERTIFICATE-----', '', $result);
-        $result = str_replace(PHP_EOL, '', $result);
-        return $result;
+        return GetDataHelper::plainCertificate($this->certificate);
     }
 
     /**

@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace Codehell\Psd2\Tests\Application;
 
 
-use PHPUnit\Framework\TestCase;
-use Codehell\Psd2\Infrastructure\Redsys\RedsysSandboxUrlsContainer;
-use Codehell\Psd2\Infrastructure\Redsys\Requests\Payment;
-use Codehell\Psd2\Application\RequestPaymentService;
-use Codehell\Psd2\Infrastructure\Redsys\RedsysPaymentRequester;
 use Ramsey\Uuid\Uuid;
+use PHPUnit\Framework\TestCase;
+use Codehell\Psd2\Application\RequestPaymentService;
+use Codehell\Psd2\Infrastructure\Redsys\Requests\Payment;
+use Codehell\Psd2\Infrastructure\Redsys\RedsysPaymentRequester;
+use Codehell\Psd2\Infrastructure\Redsys\RedsysSandboxUrlsContainer;
 
 class RequestPaymentServiceTest extends TestCase
 {

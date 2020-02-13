@@ -4,6 +4,7 @@
 namespace Codehell\Psd2\Infrastructure\Redsys;
 
 
+use Codehell\Psd2\Infrastucture\Helpers\GetDataHelper;
 use GuzzleHttp\Client;
 use Codehell\Psd2\Domain\PaymentRequester;
 use Codehell\Psd2\Domain\DomainTraits\SetUrls;
@@ -34,11 +35,11 @@ final class RedsysPaymentRequester implements PaymentRequester
         $client = new Client([
             'base_uri' => $this->urls->baseUrl()
         ]);
-
+        $certificate = $this->payment->getPlainCertificate();
         $headers = [
             'accept' => 'application/json',
             'content-type' => 'application/json',
-            'TPP-Signature-Certificate' => $this->payment->getCertificate(),
+            'TPP-Signature-Certificate' => $certificate,
             'PSU-IP-Address' => $this->payment->getPsuIp(),
             'Digest' => $this->payment->getSha256Digest(),
             'Signature' => $this->payment->getHeaderSignature(),

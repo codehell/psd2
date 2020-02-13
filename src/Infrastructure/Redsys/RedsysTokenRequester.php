@@ -44,7 +44,6 @@ final class RedsysTokenRequester implements TokenRequester
         $this->headers = [
             'accept' => 'application/json',
             'content-type' => 'application/json',
-            'Authorization' => 'Bearer ' . $token,
             'TPP-Signature-Certificate' => $certificate,
         ];
         $this->aspsp = $aspsp;
@@ -61,16 +60,17 @@ final class RedsysTokenRequester implements TokenRequester
         if (is_null($this->urls)) {
             throw new Psd2UrlNotSetException;
         }
+        $formParams = [
+            'grant_type' => 'authorization_code',
+            'client_id' => $clientId,
+            'code' => $code,
+            'redirect_uri' => $redirectUri,
+            'code_verifier' => $codeVerifier
+        ];
         $url = $this->urls->tokenRequestUrl() . $this->aspsp . '/token';
         $client = new Client();
         $res = $client->request('POST', $url, [
-            'form_params' => [
-                'grant_type' => 'authorization_code',
-                'client_id' => $clientId,
-                'code' => $code,
-                'redirect_uri' => $redirectUri,
-                'code_verifier' => $codeVerifier
-            ],
+            'form_params' => $formParams,
             'debug' => false,
         ]);
         return $res->getBody()->getContents();

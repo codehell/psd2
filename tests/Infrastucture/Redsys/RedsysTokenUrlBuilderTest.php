@@ -30,7 +30,6 @@ class RedsysTokenUrlBuilderTest extends TestCase
         );
         $tokenUrl->setUrls($urls);
         $result = $tokenUrl();
-        var_dump($result);
         self::assertEquals($expected, $result);
     }
 

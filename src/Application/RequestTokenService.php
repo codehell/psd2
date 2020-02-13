@@ -34,6 +34,6 @@ final class RequestTokenService
      */
     public function __invoke(string $code, string $aspsp, string $clientId, string $redirectUrl, string $codeVerifier): string
     {
-        return $this->request->getToken($code, $aspsp, $clientId, $redirectUrl, $codeVerifier);
+        return $this->request->getToken($code, $clientId, $redirectUrl, $codeVerifier);
     }
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Codehell\Psd2\Tests\Application\Redsys;
 
 use Exception;
-use Codehell\Psd2\Application\AspspsService;
 use Ramsey\Uuid\Uuid;
-use Codehell\Psd2\Domain\Signer;
 use PHPUnit\Framework\TestCase;
+use Codehell\Psd2\Domain\Signer;
+use Codehell\Psd2\Application\AspspsService;
 use Codehell\Psd2\Infrastructure\Redsys\RedsysAspsps;
 
 final class AspspsTest extends TestCase
@@ -30,10 +30,9 @@ EOD;
         $digest = $signature->getSHA256Digest('');
         $pk = file_get_contents(__DIR__ . '/../credentials/pri_key.pem');
         $cert = file_get_contents(__DIR__ . '/../credentials/certificate.pem');
-        $textCert = file_get_contents(__DIR__ . '/../credentials/certificate.txt');
         $generatedSignature = $signature->getSignature($digest, $requestId, $pk);
         $headerSignature = $signature->headerSignature($generatedSignature, $cert);
-        $redsysPort = new RedsysAspsps($requestId, $digest, $headerSignature, $textCert);
+        $redsysPort = new RedsysAspsps($requestId, $digest, $headerSignature, $cert);
         $aspspsService = new AspspsService($redsysPort);
         $this->assertEquals($expected, $aspspsService->getAspsps());
     }
