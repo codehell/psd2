@@ -4,6 +4,7 @@
 namespace Codehell\Psd2\Infrastructure\Redsys;
 
 
+use Codehell\Psd2\Infrastucture\Helpers\GetDataHelper;
 use GuzzleHttp\Client;
 use Codehell\Psd2\Domain\PaymentChecker;
 use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
@@ -24,7 +25,7 @@ final class RedsysPaymentChecker implements PaymentChecker
      * @param string $aspsp
      * @param string $digest
      * @param string $certificate
-     * @param string $signature
+     * @param string $headerSignature
      * @param string $version
      * @param string $redirectUrl
      * @param string $psuIp
@@ -34,20 +35,21 @@ final class RedsysPaymentChecker implements PaymentChecker
         string $aspsp,
         string $digest,
         string $certificate,
-        string $signature,
+        string $headerSignature,
         string $version,
         string $redirectUrl,
         string $psuIp,
         string $stateUrl
     )
     {
+        $plainCertificate = GetDataHelper::plainCertificate($certificate);
         $this->headers = [
             'accept' => 'application/json',
             'content-type' => 'application/json',
-            'TPP-Signature-Certificate' => $certificate,
+            'TPP-Signature-Certificate' => $plainCertificate,
             'PSU-IP-Address' => $psuIp,
             'Digest' => $digest,
-            'Signature' => $signature,
+            'Signature' => $headerSignature,
         ];
         $this->aspsp = $aspsp;
         $this->version = $version;
@@ -58,7 +60,7 @@ final class RedsysPaymentChecker implements PaymentChecker
     /**
      * {@inheritDoc}
      */
-    public function checkPayment(string $requestId, string $token, string $key): string
+    public function checkPayment(string $requestId, string $token, string $clientId): string
     {
         if (is_null($this->urls)) {
             throw new Psd2UrlNotSetException;
@@ -68,8 +70,9 @@ final class RedsysPaymentChecker implements PaymentChecker
         ]);
 
         $localHeaders = [
+            'Authorization' => 'Bearer ' . $token,
             'X-Request-ID' => $requestId,
-            'X-IBM-Client-Id' => $key,
+            'X-IBM-Client-Id' => $clientId,
             'PSU-Http-Method' => 'GET'
         ];
         $headers = array_merge($this->headers, $localHeaders);

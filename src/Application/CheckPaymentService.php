@@ -20,12 +20,12 @@ final class CheckPaymentService
     /**
      * @param string $requestId
      * @param string $token
-     * @param string $key
+     * @param string $clientId
      * @return string
      * @throws Psd2UrlNotSetException
      */
-    public function __invoke(string $requestId, string $token, string $key): string
+    public function __invoke(string $requestId, string $token, string $clientId): string
     {
-        return $this->checker->checkPayment($requestId, $token, $key);
+        return $this->checker->checkPayment($requestId, $token, $clientId);
     }
 }

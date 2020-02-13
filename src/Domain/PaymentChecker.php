@@ -11,9 +11,9 @@ interface PaymentChecker extends UrlsSetter
     /**
      * @param string $requestId
      * @param string $token
-     * @param string $key
+     * @param string $clientId
      * @return string
      * @throws Psd2UrlNotSetException
      */
-    public function checkPayment(string $requestId, string $token, string $key): string;
+    public function checkPayment(string $requestId, string $token, string $clientId): string;
 }
