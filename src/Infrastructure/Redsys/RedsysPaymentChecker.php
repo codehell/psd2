@@ -19,6 +19,10 @@ final class RedsysPaymentChecker implements PaymentChecker
     private $redirectUrl;
     private $version;
     private $stateUrl;
+    /**
+     * @var string
+     */
+    private $clientId;
 
     /**
      * RedsysPaymentRequests constructor.
@@ -30,6 +34,7 @@ final class RedsysPaymentChecker implements PaymentChecker
      * @param string $redirectUrl
      * @param string $psuIp
      * @param string $stateUrl
+     * @param string $clientId
      */
     public function __construct(
         string $aspsp,
@@ -39,7 +44,8 @@ final class RedsysPaymentChecker implements PaymentChecker
         string $version,
         string $redirectUrl,
         string $psuIp,
-        string $stateUrl
+        string $stateUrl,
+        string $clientId
     )
     {
         $plainCertificate = GetDataHelper::plainCertificate($certificate);
@@ -55,12 +61,13 @@ final class RedsysPaymentChecker implements PaymentChecker
         $this->version = $version;
         $this->redirectUrl = $redirectUrl;
         $this->stateUrl = $stateUrl;
+        $this->clientId = $clientId;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function checkPayment(string $requestId, string $token, string $clientId): string
+    public function checkPayment(string $requestId, string $token): string
     {
         if (is_null($this->urls)) {
             throw new Psd2UrlNotSetException;
@@ -72,7 +79,7 @@ final class RedsysPaymentChecker implements PaymentChecker
         $localHeaders = [
             'Authorization' => 'Bearer ' . $token,
             'X-Request-ID' => $requestId,
-            'X-IBM-Client-Id' => $clientId,
+            'X-IBM-Client-Id' => $this->clientId,
             'PSU-Http-Method' => 'GET'
         ];
         $headers = array_merge($this->headers, $localHeaders);

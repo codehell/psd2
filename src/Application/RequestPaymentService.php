@@ -17,9 +17,6 @@ final class RequestPaymentService
     }
 
     /**
-     * @param $requestId
-     * @param $token
-     * @param $key
      * @return string
      * @throws Psd2UrlNotSetException
      */
