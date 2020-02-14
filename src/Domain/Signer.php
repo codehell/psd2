@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Psd2;
+namespace Codehell\Psd2\Domain;
 
-final class RedsysSignature
+
+final class Signer
 {
     public function getSignature($digest, $uuid, $privateKey, $redirectUrl = null): string
     {

@@ -1,10 +1,13 @@
 <?php
+
 declare(strict_types=1);
-namespace Psd2;
+namespace Codehell\Psd2\Infrastructure\Redsys;
 
 use GuzzleHttp\Client;
+use Codehell\Psd2\Domain\StringInvoker;
+use Codehell\Psd2\Infrastucture\Helpers\GetDataHelper;
 
-final class RedsysAspsps
+final class RedsysAspsps implements StringInvoker
 {
     private $requestId;
     private $digest;
@@ -31,6 +34,7 @@ final class RedsysAspsps
      */
     public function __invoke(): string
     {
+        $certificate = GetDataHelper::plainCertificate($this->certificate);
         $client = new Client([
             'base_uri' => "https://apis-i.redsys.es:20443/psd2/xs2a/api-entrada-xs2a/services/"
         ]);
@@ -39,7 +43,7 @@ final class RedsysAspsps
             'X-Request-ID' => $this->requestId,
             'Digest' => $this->digest,
             'Signature' => $this->signature,
-            'TPP-Signature-Certificate' => $this->certificate,
+            'TPP-Signature-Certificate' => $certificate,
         ];
         $res = $client->request('GET', 'v2/sva/aspsps', [
             'headers' => $headers,

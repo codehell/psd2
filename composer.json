@@ -9,7 +9,7 @@
       "email": "dmorales@inespay.com"
     }
   ],
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "require": {
     "php": ">=7.2",
     "ext-openssl": "*",
@@ -19,7 +19,17 @@
   },
   "autoload": {
     "psr-4": {
-      "Psd2\\": "src/"
+      "Codehell\\Psd2\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Codehell\\Psd2\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "6.x-dev"
     }
   },
   "require-dev": {
