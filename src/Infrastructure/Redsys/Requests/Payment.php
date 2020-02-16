@@ -93,6 +93,18 @@ class Payment
      * @var string
      */
     private $clientId;
+    /**
+     * @var string
+     */
+    private $psuAcceptLanguage;
+    /**
+     * @var string
+     */
+    private $psuAcceptCharset;
+    /**
+     * @var string
+     */
+    private $psuAcceptEncoding;
 
     public function __construct(
         string $provider,
@@ -109,7 +121,10 @@ class Payment
         string $privateKey,
         string $clientId,
         string $version = 'v1',
-        string $currency = 'EUR'
+        string $currency = 'EUR',
+        string $psuAcceptLanguage = 'es-ES',
+        string $psuAcceptCharset = 'utf-8',
+        string $psuAcceptEncoding = 'gzip'
     )
     {
         $this->provider = $provider;
@@ -126,7 +141,7 @@ class Payment
         $this->currency = $currency;
         $this->signer = new Signer;
         $this->privateKey = $privateKey;
-        // this code must execute in order
+        // this code must be executed in order
         $this->generatePayload();
         $this->generateDigest();
         $this->generateSHA256Digest();
@@ -135,6 +150,9 @@ class Payment
         // end of sequential code
         $this->version = $version;
         $this->clientId = $clientId;
+        $this->psuAcceptLanguage = $psuAcceptLanguage;
+        $this->psuAcceptCharset = $psuAcceptCharset;
+        $this->psuAcceptEncoding = $psuAcceptEncoding;
     }
 
     /**
@@ -208,6 +226,32 @@ class Payment
     {
         return $this->payload;
     }
+
+    /**
+     * @return string
+     */
+    public function getPsuAcceptLanguage(): string
+    {
+        return $this->psuAcceptLanguage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPsuAcceptCharset(): string
+    {
+        return $this->psuAcceptCharset;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPsuAcceptEncoding(): string
+    {
+        return $this->psuAcceptEncoding;
+    }
+
+
 
     /**
      * @return string

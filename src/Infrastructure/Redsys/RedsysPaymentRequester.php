@@ -36,7 +36,10 @@ final class RedsysPaymentRequester implements PaymentRequester
         ]);
         $certificate = $this->payment->getPlainCertificate();
         $headers = [
-            'accept' => 'application/json',
+            'PSU-Accept' => 'application/json',
+            'PSU-Accept-Language' => $this->payment->getPsuAcceptLanguage(),
+            'PSU-Accept-Charset' => $this->payment->getPsuAcceptCharset(),
+            'PSU-Accept-Encoding' => $this->payment->getPsuAcceptEncoding(),
             'content-type' => 'application/json',
             'TPP-Signature-Certificate' => $certificate,
             'PSU-IP-Address' => $this->payment->getPsuIp(),
