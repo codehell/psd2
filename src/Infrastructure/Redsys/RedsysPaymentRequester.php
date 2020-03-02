@@ -5,6 +5,7 @@ namespace Codehell\Psd2\Infrastructure\Redsys;
 
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
 use Codehell\Psd2\Domain\PaymentRequester;
 use Codehell\Psd2\Domain\DomainTraits\SetUrls;
 use Codehell\Psd2\Infrastructure\Redsys\Requests\Payment;
@@ -52,15 +53,20 @@ final class RedsysPaymentRequester implements PaymentRequester
             'PSU-Http-Method' => 'POST',
             'TPP-Redirect-Preferred' => 'true',
         ];
+        $body = $this->payment->getPayload();
+        Log::info('request headers:', $headers);
+        Log::info('request body: ' . $body);
         $res = $client->request(
             'POST',
             $this->payment->getAspsp() . '/' . $this->payment->getVersion() . '/sva/payments/sepa-credit-transfers',
             [
                 'headers' => $headers,
-                'body' => $this->payment->getPayload(),
+                'body' => $body,
                 'debug' => false
             ]
         );
-        return $res->getBody()->getContents();
+        $contents = $res->getBody()->getContents();
+        Log::info('response', json_decode($contents, true));
+        return $contents;
     }
 }

@@ -105,6 +105,10 @@ class Payment
      * @var string
      */
     private $psuAcceptEncoding;
+    /**
+     * @var string
+     */
+    private $unstructuredInformation;
 
     public function __construct(
         string $provider,
@@ -120,6 +124,7 @@ class Payment
         string $creditorName,
         string $privateKey,
         string $clientId,
+        string $unstructuredInformation = '',
         string $version = 'v1',
         string $currency = 'EUR',
         string $psuAcceptLanguage = 'es-ES',
@@ -141,6 +146,12 @@ class Payment
         $this->currency = $currency;
         $this->signer = new Signer;
         $this->privateKey = $privateKey;
+        $this->version = $version;
+        $this->clientId = $clientId;
+        $this->psuAcceptLanguage = $psuAcceptLanguage;
+        $this->psuAcceptCharset = $psuAcceptCharset;
+        $this->psuAcceptEncoding = $psuAcceptEncoding;
+        $this->unstructuredInformation = $unstructuredInformation;
         // this code must be executed in order
         $this->generatePayload();
         $this->generateDigest();
@@ -148,11 +159,6 @@ class Payment
         $this->generateSignature();
         $this->generateHeaderSignature();
         // end of sequential code
-        $this->version = $version;
-        $this->clientId = $clientId;
-        $this->psuAcceptLanguage = $psuAcceptLanguage;
-        $this->psuAcceptCharset = $psuAcceptCharset;
-        $this->psuAcceptEncoding = $psuAcceptEncoding;
     }
 
     /**
@@ -251,7 +257,13 @@ class Payment
         return $this->psuAcceptEncoding;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getUnstructuredInformation(): string
+    {
+        return $this->unstructuredInformation;
+    }
 
     /**
      * @return string
@@ -271,7 +283,8 @@ class Payment
             'creditorAccount' => [
                 'iban' => $this->creditorAccount
             ],
-            'creditorName' => $this->creditorName
+            'creditorName' => $this->creditorName,
+            'remittanceInformationUnstructured' => $this->unstructuredInformation
         ];
         $this->payload = json_encode($payload);
     }

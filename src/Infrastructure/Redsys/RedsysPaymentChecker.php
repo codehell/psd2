@@ -4,15 +4,18 @@
 namespace Codehell\Psd2\Infrastructure\Redsys;
 
 
-use Codehell\Psd2\Infrastucture\Helpers\GetDataHelper;
 use GuzzleHttp\Client;
 use Codehell\Psd2\Domain\PaymentChecker;
-use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
 use Codehell\Psd2\Domain\DomainTraits\SetUrls;
+use Codehell\Psd2\Infrastucture\Helpers\GetDataHelper;
+use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use codehell\Psd2\Domain\DomainException\Psd2InitPaymentRejectedException;
 
 final class RedsysPaymentChecker implements PaymentChecker
 {
     use SetUrls;
+
+    private const PAYMENT_STATUS_ACCEPTED = 'ACSC';
 
     private $aspsp;
     private $headers;
@@ -86,6 +89,12 @@ final class RedsysPaymentChecker implements PaymentChecker
         $res = $client->request('GET', $this->aspsp . $this->stateUrl, [
             'headers' => $headers,
         ]);
+        $response = $res->getBody();
+        $arrayResponse = json_decode($response->getContents(), true);
+        throw new Psd2InitPaymentRejectedException;
+        if ($arrayResponse['transactionStatus'] !== self::PAYMENT_STATUS_ACCEPTED) {
+            throw new Psd2InitPaymentRejectedException;
+        }
         return $res->getBody()->getContents();
     }
 }
