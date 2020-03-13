@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Codehell\Psd2\Application;
 
 
-use codehell\Psd2\Domain\DomainException\Psd2InitPaymentRejectedException;
 use Codehell\Psd2\Domain\PaymentChecker;
 use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use codehell\Psd2\Domain\DomainException\Psd2InitPaymentRejectedException;
 
 final class CheckPaymentService
 {

@@ -5,11 +5,11 @@ namespace Codehell\Psd2\Infrastructure\Redsys;
 
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Log;
 use Codehell\Psd2\Domain\PaymentRequester;
 use Codehell\Psd2\Domain\DomainTraits\SetUrls;
 use Codehell\Psd2\Infrastructure\Redsys\Requests\Payment;
 use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Codehell\Psd2\Infrastructure\Redsys\Helpers\GuzzleHandlerStackBuilder;
 
 final class RedsysPaymentRequester implements PaymentRequester
 {
@@ -25,14 +25,17 @@ final class RedsysPaymentRequester implements PaymentRequester
     /**
      * The key is clientId
      * {@inheritDoc}
-     * @throws Psd2UrlNotSetException
      */
     public function initPayment(): string
     {
         if (is_null($this->urls)) {
             throw new Psd2UrlNotSetException;
         }
+
+        $stack = GuzzleHandlerStackBuilder::create();
+
         $client = new Client([
+            'handler' => $stack,
             'base_uri' => $this->urls->baseUrl()
         ]);
         $certificate = $this->payment->getPlainCertificate();
@@ -54,8 +57,6 @@ final class RedsysPaymentRequester implements PaymentRequester
             'TPP-Redirect-Preferred' => 'true',
         ];
         $body = $this->payment->getPayload();
-        Log::info('request headers:', $headers);
-        Log::info('request body: ' . $body);
         $res = $client->request(
             'POST',
             $this->payment->getAspsp() . '/' . $this->payment->getVersion() . '/sva/payments/sepa-credit-transfers',
@@ -65,8 +66,7 @@ final class RedsysPaymentRequester implements PaymentRequester
                 'debug' => false
             ]
         );
-        $contents = $res->getBody()->getContents();
-        Log::info('response', json_decode($contents, true));
-        return $contents;
+        $res->getBody()->rewind();
+        return $res->getBody()->getContents();
     }
 }

@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Codehell\Psd2\Domain\TokenRequester;
 use Codehell\Psd2\Domain\DomainTraits\SetUrls;
 use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
+use Codehell\Psd2\Infrastructure\Redsys\Helpers\GuzzleHandlerStackBuilder;
 
 final class RedsysTokenRequester implements TokenRequester
 {
@@ -67,12 +68,15 @@ final class RedsysTokenRequester implements TokenRequester
             'redirect_uri' => $redirectUri,
             'code_verifier' => $codeVerifier
         ];
+
         $url = $this->urls->tokenRequestUrl() . $this->aspsp . '/token';
-        $client = new Client();
+        $stack = GuzzleHandlerStackBuilder::create();
+        $client = new Client(['handler' => $stack]);
         $res = $client->request('POST', $url, [
             'form_params' => $formParams,
             'debug' => false,
         ]);
+        $res->getBody()->rewind();
         return $res->getBody()->getContents();
     }
 }

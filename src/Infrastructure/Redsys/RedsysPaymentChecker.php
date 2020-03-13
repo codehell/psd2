@@ -9,13 +9,16 @@ use Codehell\Psd2\Domain\PaymentChecker;
 use Codehell\Psd2\Domain\DomainTraits\SetUrls;
 use Codehell\Psd2\Infrastucture\Helpers\GetDataHelper;
 use Codehell\Psd2\Domain\DomainException\Psd2UrlNotSetException;
-use codehell\Psd2\Domain\DomainException\Psd2InitPaymentRejectedException;
+use Codehell\Psd2\Domain\DomainException\Psd2InitPaymentRejectedException;
+use Codehell\Psd2\Infrastructure\Redsys\Helpers\GuzzleHandlerStackBuilder;
 
 final class RedsysPaymentChecker implements PaymentChecker
 {
     use SetUrls;
 
     private const PAYMENT_STATUS_ACCEPTED = 'ACSC';
+    // TODO: construir esta url a partir del id: 59e5579c-1490-41af-ac92-07af57a057bc (meter en el contenedor de urls)
+    private const STATE_URL = '/v1/payments/sepa-credit-transfers/59e5579c-1490-41af-ac92-07af57a057bc/status';
 
     private $aspsp;
     private $headers;
@@ -75,7 +78,10 @@ final class RedsysPaymentChecker implements PaymentChecker
         if (is_null($this->urls)) {
             throw new Psd2UrlNotSetException;
         }
+        $stack = GuzzleHandlerStackBuilder::create();
+
         $client = new Client([
+            'handler' => $stack,
             'base_uri' => $this->urls->baseUrl()
         ]);
 
@@ -89,12 +95,14 @@ final class RedsysPaymentChecker implements PaymentChecker
         $res = $client->request('GET', $this->aspsp . $this->stateUrl, [
             'headers' => $headers,
         ]);
-        $response = $res->getBody();
-        $arrayResponse = json_decode($response->getContents(), true);
-        throw new Psd2InitPaymentRejectedException;
+        $res->getBody()->rewind();
+        $response = $res->getBody()->getContents();
+        $arrayResponse = json_decode($response, true);
+
         if ($arrayResponse['transactionStatus'] !== self::PAYMENT_STATUS_ACCEPTED) {
-            throw new Psd2InitPaymentRejectedException;
+            throw new Psd2InitPaymentRejectedException();
         }
-        return $res->getBody()->getContents();
+
+        return $response;
     }
 }
